@@ -3,59 +3,68 @@ import Link from "next/link";
 import Image from "next/image";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Zap } from "lucide-react";
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
-export default function Header() {
+
+const Header = () => {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        
-        {/* Left Side: Brand Logo */}
-        <Link
-          href="/"
-          className="flex items-center gap-2 rounded-lg outline-none transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        >
+    <header className="w-full fixed top-0 left-0 z-50 h-16 border-b border-white/6 backdrop-blur-md">
+      <nav className="mx-auto flex h-full max-w-9xl items-center justify-between px-4 sm:px-6">
+        <Link href={"/"}>
           <Image
-            src="/logo.png"
+            src={"/logo.png"}
             alt="Forge Logo"
-            width={120}
-            height={36}
-            priority
-            className="h-9 w-auto rounded-md object-contain"
+            width={100}
+            height={100}
+            className="h-9 w-auto rounded-md"
           />
         </Link>
 
-        {/* Right Side: Navigation, Credits & Toggle Grouped Together */}
-        <div className="flex items-center gap-4 sm:gap-6">
-          <nav className="flex items-center">
+        <div className="flex items-center gap-5">
+          <Show when="signed-in">
             <Link
-              href="/projects"
-              className="text-base font-medium text-muted-foreground transition-colors hover:text-foreground"
+              href={"/projects"}
+              className="text-[18px] font-medium text-white/40 transition-colors hover:text-white/80"
             >
               Projects
             </Link>
-          </nav>
 
-          {/* Credits Pill (Slightly larger height, text, and icon) */}
-          <div
-            className="inline-flex h-9 items-center gap-2 rounded-full border border-border/60 bg-muted/40 px-3.5 text-sm font-medium text-muted-foreground select-none transition-colors hover:bg-muted/60"
-            title="Remaining Credits"
-          >
-            <Zap className="h-4 w-4 fill-amber-500 text-amber-500 shrink-0" />
-            <span className="font-semibold text-foreground">3</span>
-            <span className="text-muted-foreground/80">/ 40</span>
-            <span className="hidden sm:inline text-muted-foreground/80">Credits</span>
-          </div>
+            <span className="inline-flex h-8 items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 text-xs text-white/70">
+              <Zap className="h-3 w-3 fill-white/70" />
+              3/40 Credits
+            </span>
 
-          {/* Subtle Vertical Separator */}
-          <div className="h-5 w-px bg-border/60" aria-hidden="true" />
+            <UserButton />
+          </Show>
 
-          {/* Theme Switcher */}
-          <div className="flex items-center justify-center [&_button]:h-9 [&_button]:w-9">
-            <ThemeToggle />
-          </div>
+          <Show when="signed-out">
+            <SignInButton mode="modal">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-[13px] font-medium text-white/50 hover:text-white/90 hover:bg-transparent"
+              >
+                Sign in
+              </Button>
+            </SignInButton>
+
+            <SignInButton mode="modal">
+              <Button
+                size="sm"
+                className="inline-flex h-8 items-center gap-1.5 rounded-full bg-white px-4 text-[13px] font-semibold text-black hover:bg-white/90 active:scale-95"
+              >
+                Get Started
+                <ArrowRight className="h-3 w-3 opacity-60" />
+              </Button>
+            </SignInButton>
+          </Show>
         </div>
-
-      </div>
+        <ThemeToggle />
+      </nav>
     </header>
   );
-}
+};
+
+export default Header;

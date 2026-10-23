@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/Header";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Suspense } from "react";
 
 const lora = Lora({
   subsets: ["latin"],
@@ -34,7 +35,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             enableSystem
             disableTransitionOnChange
           >
-            <Header />
+            <Suspense fallback={<div className="h-16" />}>
+              <Header />
+            </Suspense>
             <main> {children}</main>
           </ThemeProvider>
         </body>

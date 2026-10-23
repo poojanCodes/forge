@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
   experimental: {
     agentFeedback: true,
   },
+
+   serverExternalPackages: ["@cline/core", "@cline/sdk"],
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {
